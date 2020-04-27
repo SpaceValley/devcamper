@@ -11,6 +11,8 @@ const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
 const cors = require('cors');
+const passport = require('passport');
+const expressLayouts = require('express-ejs-layouts');
 const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
 
@@ -67,6 +69,14 @@ app.use(cors());
 
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// EJS
+app.use(expressLayouts);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
 
 // Mount routers
 app.use('/api/v1/bootcamps', bootcamps);
